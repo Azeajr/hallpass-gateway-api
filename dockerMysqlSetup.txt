@@ -1,0 +1,8 @@
+docker run --detach --name mariadbtest --env MARIADB_USER=hallpass --env MARIADB_PASSWORD=hallpass --env MARIADB_ROOT_PASSWORD=password -p 3306:3306  mariadb:latest
+
+mysql -u root -ppassword
+
+mysql -u hallpass -phallpass
+
+mariadb -h 127.0.0.1 -u hallpass -p Hallpass < setup.sql
+
