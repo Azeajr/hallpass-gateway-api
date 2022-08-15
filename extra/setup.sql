@@ -1,5 +1,6 @@
 CREATE DATABASE IF NOT EXISTS Hallpass;
 USE Hallpass;
+DROP TABLE IF EXISTS hallpasses;
 DROP TABLE IF EXISTS destinations;
 DROP TABLE IF EXISTS rosters;
 DROP TABLE IF EXISTS rosterNames;
@@ -37,6 +38,17 @@ CREATE TABLE IF NOT EXISTS destinations (
   name VARCHAR(255) NOT NULL,
   PRIMARY KEY (id)
 );
+CREATE TABLE IF NOT EXISTS hallpasses(
+  id INT(10) unsigned NOT NULL AUTO_INCREMENT,
+  date DATETIME NOT NULL,
+  firstName VARCHAR(255) NOT NULL,
+  lastName VARCHAR(255) NOT NULL,
+  origin VARCHAR(255) NOT NULL,
+  destination VARCHAR (255) NOT NULL,
+  timer INT(10) unsigned NOT NULL,
+  PRIMARY KEY (id)
+);
+
 INSERT INTO teachers(name)
 VALUES ('Zea, A.'),
   ('Graham, M.'),
@@ -114,5 +126,11 @@ VALUES (1, 1, 1),
   (7, 3, 15),
   (7, 3, 16);
 INSERT INTO destinations(name)
-VALUES ('Bathroom'),
+VALUES ('Bathroom'), ('Nurse'),
   ('Main Office');
+
+-- INSERT INTO hallpasses(date, firstName, lastName, origin, destination, timer)
+-- VALUES ('2022-08-15 16:43:04','Mattie', 'Patton', 'Zea, A.', 'Bathroom', 10),
+-- ('2022-08-15 16:43:04','Joey', 'Armstrong', 'Zea, A.', 'Bathroom', 10),
+-- ('2022-08-15 16:43:04','Guadalupe', 'Coleman', 'Graham, M.','Zea, A.', 3),
+-- ('2022-08-15 16:43:04','Fredrick', 'Osborne', 'Nurse','Zea, A.', 3);
