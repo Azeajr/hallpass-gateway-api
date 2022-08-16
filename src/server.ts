@@ -55,6 +55,14 @@ app.get('/api/getDestinations', async (req, res) => {
   });
 });
 
+app.get('/api/getHallpasses', async (req, res) => {
+  db.then(async (conn) => {
+    const hallpasses: any[] = await conn.query(`SELECT * FROM hallpasses h`);
+
+    res.send(hallpasses);
+  });
+});
+
 app.post('/api/postHallpass', async (req, res) => {
   const { date, firstName, lastName, origin, destination, timer } = req.body;
 
