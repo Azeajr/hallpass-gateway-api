@@ -19,18 +19,18 @@ CREATE TABLE IF NOT EXISTS students (
 );
 CREATE TABLE IF NOT EXISTS rosterNames (
   id INT(10) unsigned NOT NULL AUTO_INCREMENT,
-  RosterName VARCHAR(255) NOT NULL,
-  TeacherID INT(10) unsigned NOT NULL,
+  rosterName VARCHAR(255) NOT NULL,
+  teacherId INT(10) unsigned NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (TeacherID) REFERENCES teachers (id) ON DELETE CASCADE
+  FOREIGN KEY (teacherId) REFERENCES teachers (id) ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS rosters (
   id INT(10) unsigned NOT NULL,
-  TeacherID INT(10) unsigned NOT NULL,
-  StudentID INT(10) unsigned NOT NULL,
-  PRIMARY KEY (id, TeacherID, StudentID),
-  FOREIGN KEY (TeacherID) REFERENCES teachers (id) ON DELETE CASCADE,
-  FOREIGN KEY (StudentID) REFERENCES students (id) ON DELETE CASCADE,
+  teacherId INT(10) unsigned NOT NULL,
+  studentId INT(10) unsigned NOT NULL,
+  PRIMARY KEY (id, teacherId, studentId),
+  FOREIGN KEY (teacherId) REFERENCES teachers (id) ON DELETE CASCADE,
+  FOREIGN KEY (studentId) REFERENCES students (id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES rosterNames (id) ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS destinations (
@@ -70,7 +70,7 @@ VALUES ('Ed', 'Hines'),
   ('Darryl', 'Dixon'),
   ('Edwin', 'Munoz'),
   ('Frances', 'Carson');
-INSERT INTO rosterNames (RosterName, TeacherID)
+INSERT INTO rosterNames (rosterName, teacherId)
 VALUES ('Block 1', 1),
   ('Block 2', 1),
   ('Block 3', 1),
@@ -78,7 +78,7 @@ VALUES ('Block 1', 1),
   ('Philosophy', 2),
   ('U.S. History', 2),
   ('Advisory', 3);
-INSERT INTO rosters(id, TeacherID, StudentID)
+INSERT INTO rosters(id, teacherId, studentId)
 VALUES (1, 1, 1),
   (1, 1, 2),
   (1, 1, 3),

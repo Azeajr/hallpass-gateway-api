@@ -1,82 +1,61 @@
-/* eslint-disable no-restricted-syntax */
 import express from 'express';
 import cors from 'cors';
-import db from './config/db';
+// import db from './config/db';
+// import setup from './setup';
+import cookieParser from 'cookie-parser';
+
+import { logger } from './middleware/logEvents';
+import errorHandler from './middleware/errorHandler';
+import corsOptions from './config/corsOptions';
+import hallpasses from './routes/api/hallpasses';
+import users from './routes/api/users';
+import destinations from './routes/api/destinations';
+import root from './routes/root';
+import credentials from './middleware/credentials';
+
+import register from './routes/register';
+import auth from './routes/auth';
+import refresh from './routes/refresh';
+import logout from './routes/logout';
+
+import verifyJWT from './middleware/verifyJWT';
 
 const app = express();
 const PORT = 3002;
 
-app.use(cors());
+// setup(db);
+
+app.use(logger);
+
+app.use(credentials);
+
+app.use(cors(corsOptions));
+
+app.use(express.urlencoded({ extended: false }));
+
 app.use(express.json());
 
-app.get('/api/getTeacherData', async (req, res) => {
-  db.then(async (conn) => {
-    const rosterNames: any[] = await conn.query(`
-      SELECT
-        RosterName
-      FROM
-        rosterNames rn
-      JOIN teachers t
-      ON
-        rn.TeacherID = t.id
-      WHERE
-        t.name = 'Zea, A.'
-    `);
+app.use(cookieParser());
 
-    const rows: any[] = await conn.query(
-      `SELECT firstName , lastName , t.name , rn.RosterName FROM students s JOIN rosters r ON s.id = r.StudentID JOIN rosterNames rn on r.id = rn.id JOIN teachers t on r.TeacherID = t.id WHERE t.name ='Zea, A.'`
-    );
+// Serve static files
+app.use('/', express.static(path.join(__dirname, '/public')));
 
-    const teacherData: any[] = [];
+app.use('/', root);
 
-    for (const roster of rosterNames) {
-      const students: { firstName: string; lastName: string }[] = [];
+app.use('/register', register);
+app.use('/auth', auth);
+app.use('/refresh', refresh);
+app.use('/logout', logout);
 
-      for (const row of rows) {
-        if (row.RosterName === roster.RosterName) {
-          students.push({ firstName: row.firstName, lastName: row.lastName });
-        }
-      }
+app.use(verifyJWT);
 
-      teacherData.push({ courseTitle: roster.RosterName, students });
-    }
-    res.send(teacherData);
-  });
-});
+app.use('/users', users);
 
-app.get('/api/getDestinations', async (req, res) => {
-  db.then(async (conn) => {
-    const rows: any[] = await conn.query(
-      `SELECT t.name FROM  teachers t WHERE t.name != 'Zea, A' UNION SELECT d.name FROM destinations d`
-    );
+app.use('/destinations', destinations);
 
-    const destinations: string[] = rows.map((row) => row.name);
-    res.send(destinations);
-  });
-});
+app.use('/hallpasses', hallpasses);
 
-app.get('/api/getHallpasses', async (req, res) => {
-  db.then(async (conn) => {
-    const hallpasses: any[] = await conn.query(`SELECT * FROM hallpasses h`);
-
-    res.send(hallpasses);
-  });
-});
-
-app.post('/api/postHallpass', async (req, res) => {
-  const { date, firstName, lastName, origin, destination, timer } = req.body;
-
-  db.then(async (conn) => {
-    conn.query(
-      `INSERT INTO hallpasses(date, firstName, lastName, origin, destination, timer)
-      VALUES ('${date}', '${firstName}', '${lastName}', '${origin}', '${destination}', ${timer})`
-    );
-  }).catch((error) => {
-    console.error(error);
-  });
-
-  res.send('Hallpass posted successfully');
-});
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
