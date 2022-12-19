@@ -13,11 +13,15 @@ const handleNewUser = async (req: Request, res: Response) => {
   try {
     const hashPwd = await hash(password, 10);
 
-    const result = await db.users.create({
+    const newUser = await db.users.create({
       username,
       password: hashPwd,
     });
-    console.log(result);
+
+    await db.roles.create({
+      userId: newUser.id,
+      userPerm: 2001,
+    });
 
     return res.status(201).json({ message: `New user ${username} created!` });
   } catch (err: any) {

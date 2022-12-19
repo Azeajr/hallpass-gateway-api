@@ -13,13 +13,15 @@ const handleLogin: RequestHandler = async (req: Request, res: Response) => {
 
   const match = await bcrypt.compare(password, foundUser.password);
   if (match) {
-    // const roles = Object.values(foundUser.roles).filter(Boolean);
+    const roles = await db.roles.findOne({ where: { userId: foundUser.id } });
+    const rolesList = Object.entries(roles.dataValues)
+      .filter((e) => !e[0].toLowerCase().includes('id') && e[1])
+      .map((e) => e[1]);
 
     const accessToken = jwt.sign(
-      // { UserInfo: { username: foundUser.username, roles } },
-      { UserInfo: { username: foundUser.username } },
+      { UserInfo: { username: foundUser.username, roles: rolesList } },
       process.env.ACCESS_TOKEN_SECRET!,
-      { expiresIn: '1m' }
+      { expiresIn: '1h' }
     );
     const refreshToken = jwt.sign(
       { username: foundUser.username },
@@ -28,9 +30,7 @@ const handleLogin: RequestHandler = async (req: Request, res: Response) => {
     );
 
     foundUser.refreshToken = refreshToken;
-    const result = await foundUser.save();
-    console.log(result);
-    // console.log(roles);
+    await foundUser.save();
 
     res.cookie('jwt', refreshToken, {
       httpOnly: true,
@@ -38,8 +38,7 @@ const handleLogin: RequestHandler = async (req: Request, res: Response) => {
       secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
-    // return res.json({ roles, accessToken });
-    return res.json({ accessToken });
+    return res.json({ roles: rolesList, accessToken });
   }
   return res.sendStatus(401);
 };

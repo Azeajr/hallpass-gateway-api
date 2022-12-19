@@ -1,5 +1,9 @@
-const verifyRoles = (...allowedRoles) => {
-  return (req, res, next) => {
+/* eslint-disable consistent-return */
+import { NextFunction, Response } from 'express';
+import { TokenRequest } from '../types/ExpressTypes';
+
+const verifyRoles = (...allowedRoles: any[]) => {
+  return (req: TokenRequest, res: Response, next: NextFunction) => {
     if (!req?.roles) return res.sendStatus(401);
     const rolesArray = [...allowedRoles];
     console.log(rolesArray);
@@ -11,4 +15,4 @@ const verifyRoles = (...allowedRoles) => {
   };
 };
 
-module.exports = verifyRoles;
+export default verifyRoles;

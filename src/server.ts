@@ -1,8 +1,9 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import cookieParser from 'cookie-parser';
 // import db from './config/db';
 // import setup from './setup';
-import cookieParser from 'cookie-parser';
 
 import { logger } from './middleware/logEvents';
 import errorHandler from './middleware/errorHandler';

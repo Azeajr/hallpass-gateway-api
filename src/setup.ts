@@ -3,15 +3,24 @@ const setup = async (db: any) => {
   console.log('All models were synchronized successfully.');
 
   await db.users.bulkCreate([
-    { username: 'zeaAn001' },
-    { username: 'grahamMi001' },
-    { username: 'giulianoAl001' },
+    {
+      username: 'zeaAn001',
+      password: '$2b$10$aIvisvHcnLCkEC9.thgbJ./bDFNg/2IJP.n9Zg61oWILpj7YhTSgu',
+    },
+    {
+      username: 'grahamMi001',
+      password: '$2b$10$nAg/.NBQTZDkG6XRpflhgeFN9spq.pQD8.Zl5qMrbf3MYuSvfrk0W',
+    },
+    {
+      username: 'giulianoAl001',
+      password: '$2b$10$uqJAtbBm9mM4dLkGVj47u.ATeRoLPKmaU02YkDw1GMZ/YENNkY6kW',
+    },
   ]);
 
   await db.roles.bulkCreate([
-    { userId: 1, user: 2001 },
-    { userId: 2, user: 2001 },
-    { userId: 3, user: 2001, editor: 1984, admin: 5150 },
+    { userId: 1, userPerm: 2001 },
+    { userId: 2, userPerm: 2001 },
+    { userId: 3, userPerm: 2001, editorPerm: 1984, adminPerm: 5150 },
   ]);
 
   await db.students.bulkCreate([
