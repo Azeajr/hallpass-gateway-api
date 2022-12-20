@@ -2,8 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import cookieParser from 'cookie-parser';
-// import db from './config/db';
-// import setup from './setup';
+import mongoose from 'mongoose';
 
 import { logger } from './middleware/logEvents';
 import errorHandler from './middleware/errorHandler';
@@ -21,10 +20,15 @@ import logout from './routes/logout';
 
 import verifyJWT from './middleware/verifyJWT';
 
+import connectDB from './config/dbConn';
+
+// import setup from './setup_new';
+
 const app = express();
 const PORT = 3002;
 
-// setup(db);
+connectDB();
+// setup();
 
 app.use(logger);
 
@@ -58,6 +62,10 @@ app.use('/hallpasses', hallpasses);
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+// app.listen(PORT, () => {
+//   console.log(`Server is running on http://localhost:${PORT}`);
+// });
+mongoose.connection.once('open', () => {
+  console.log('Connected to MongoDB');
+  app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
 });
