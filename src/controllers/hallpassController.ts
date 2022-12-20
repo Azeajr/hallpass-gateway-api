@@ -1,15 +1,25 @@
 import { Request, Response } from 'express';
-import db from '../config/db';
+import Hallpass from '../model/Hallpass';
+import Student from '../model/Student';
 
 const getHallpasses = async (req: Request, res: Response) => {
-  const hallpasses = await db.hallpasses.findAll();
+  const hallpasses = await Hallpass.find().exec();
   res.send(hallpasses);
 };
 
 const postHallpass = async (req: Request, res: Response) => {
-  const { date, firstName, lastName, origin, destination, timer, state } = req.body;
+  const { date, studentId, origin, destination, timer, state } = req.body;
 
-  await db.hallpasses.create({ date, firstName, lastName, origin, destination, timer, state });
+  const student = await Student.findById(studentId).exec();
+
+  await Hallpass.create({
+    date,
+    student,
+    origin,
+    destination,
+    timer,
+    state,
+  });
 
   res.send('Hallpass posted successfully');
 };

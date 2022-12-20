@@ -28,6 +28,7 @@ const app = express();
 const PORT = 3002;
 
 connectDB();
+
 // setup();
 
 app.use(logger);
@@ -62,10 +63,19 @@ app.use('/hallpasses', hallpasses);
 
 app.use(errorHandler);
 
-// app.listen(PORT, () => {
-//   console.log(`Server is running on http://localhost:${PORT}`);
-// });
 mongoose.connection.once('open', () => {
   console.log('Connected to MongoDB');
   app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
 });
+// const test = async () => {
+//   await Student.find({});
+//   const rosters: any[] = await Roster.find({ user: '63a148c78a3cf5cee7bfee59' })
+//     .populate({
+//       path: 'students',
+//     })
+//     .exec();
+
+//   console.log(JSON.stringify(rosters, null, 2));
+// };
+
+// test();

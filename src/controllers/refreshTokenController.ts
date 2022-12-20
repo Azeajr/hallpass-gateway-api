@@ -1,6 +1,6 @@
 import { verify, sign } from 'jsonwebtoken';
 import { Request, Response } from 'express';
-import db from '../config/db';
+import User from '../model/User';
 
 const handleRefreshToken = async (req: Request, res: Response) => {
   const { cookies } = req;
@@ -10,27 +10,24 @@ const handleRefreshToken = async (req: Request, res: Response) => {
 
   const refreshToken = cookies.jwt;
 
-  const foundUser = await db.users.findOne({ where: { refreshToken } });
+  const foundUser = await User.findOne({ refreshToken }).exec();
 
   if (!foundUser) return res.sendStatus(403);
 
-  const roles = await db.roles.findOne({ where: { userId: foundUser.id } });
-  const rolesList = Object.entries(roles.dataValues)
-    .filter((e) => !e[0].toLowerCase().includes('id') && e[1])
-    .map((e) => e[1]);
+  const roles = Object.values(foundUser?.roles!);
 
   verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!, (err: any, decoded: any) => {
     if (err || foundUser.username !== decoded.username) return res.sendStatus(403);
-
+    // TODO: Need to adjust expiresIn
     const accessToken = sign(
-      { UserInfo: { username: decoded.username, roles: rolesList } },
+      { UserInfo: { username: decoded.username, roles } },
       process.env.ACCESS_TOKEN_SECRET!,
       { expiresIn: '1m' }
     );
 
-    return res.json({ accessToken });
+    return res.json({ roles, accessToken });
   });
-  return res.sendStatus(403);
+  return null;
 };
 
 export default { handleRefreshToken };

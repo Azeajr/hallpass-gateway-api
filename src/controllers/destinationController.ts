@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
-import db from '../config/db';
+import Location from '../model/Location';
+import User from '../model/User';
 
 const getDestinations = async (req: Request, res: Response) => {
-  const locations: any[] = await db.locations.findAll();
-  const users: any[] = await db.users.findAll({ attributes: ['username'] });
+  const locations: any[] = await Location.find({}, 'name').exec();
+  const users: any[] = await User.find({}, 'username').exec();
 
   res.send(locations.concat(users).map((destination) => destination.name ?? destination.username));
 };

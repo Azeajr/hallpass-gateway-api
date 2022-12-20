@@ -1,13 +1,12 @@
 import { hash } from 'bcrypt';
 import { Request, Response } from 'express';
-// import db from '../config/db';
-import User from '../model_new/User';
+import User from '../model/User';
 
 const handleNewUser = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   if (!username || !password)
     return res.status(400).json({ message: 'Username and password are required.' });
-  const duplicate = await User.findOne({ username });
+  const duplicate = await User.findOne({ username }).exec();
 
   if (duplicate) return res.sendStatus(409);
 
