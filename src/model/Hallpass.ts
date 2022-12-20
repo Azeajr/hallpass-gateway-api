@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { studentSchema } from './Student';
 
-const locationSchema = new Schema({
+const hallpassSchema = new Schema({
   date: {
     type: Date,
     required: true,
@@ -16,4 +16,4 @@ const locationSchema = new Schema({
   state: { type: String, required: true },
 });
 
-export default model('Location', locationSchema);
+export default model('Hallpass', hallpassSchema);

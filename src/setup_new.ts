@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import Location from './model_new/Location';
-import Student from './model_new/Student';
-import Roster from './model_new/Roster';
-import User from './model_new/User';
+import Location from './model/Location';
+import Student from './model/Student';
+import Roster from './model/Roster';
+import User from './model/User';
 
 const studentsJsonArray = [
   { firstName: 'Ed', lastName: 'Hines' },
@@ -36,8 +36,6 @@ const usersJsonArray = [
     password: '$2b$10$nAg/.NBQTZDkG6XRpflhgeFN9spq.pQD8.Zl5qMrbf3MYuSvfrk0W',
     roles: {
       User: 2001,
-      Editor: 1984,
-      Admin: 5150,
     },
   },
   {
@@ -45,6 +43,8 @@ const usersJsonArray = [
     password: '$2b$10$uqJAtbBm9mM4dLkGVj47u.ATeRoLPKmaU02YkDw1GMZ/YENNkY6kW',
     roles: {
       User: 2001,
+      Editor: 1984,
+      Admin: 5150,
     },
   },
 ];
@@ -69,55 +69,45 @@ export default async function setup() {
   await Location.insertMany(locationsJsonArray);
 
   const block1 = await Roster.create({
-    user: (await User.findOne({ username: 'zeaAn001' }))?._id,
+    user: await User.findOne({ username: 'zeaAn001' }),
     name: 'Block 1',
-    students: (await Student.find({})).map((e) => e.id).slice(0, 5),
+    students: (await Student.find({})).slice(0, 5),
   });
 
   const block2 = await Roster.create({
-    user: (await User.findOne({ username: 'zeaAn001' }))?._id,
+    user: await User.findOne({ username: 'zeaAn001' }),
     name: 'Block 2',
-    students: (await Student.find({})).map((e) => e.id).slice(5, 10),
+    students: (await Student.find({})).slice(5, 10),
   });
 
   const block3 = await Roster.create({
-    user: (await User.findOne({ username: 'zeaAn001' }))?._id,
+    user: await User.findOne({ username: 'zeaAn001' }),
     name: 'Block 3',
-    students: (await Student.find({})).map((e) => e.id).slice(10, 15),
+    students: (await Student.find({})).slice(10, 15),
   });
 
   const civics = await Roster.create({
-    user: (await User.findOne({ username: 'grahamMi001' }))?._id,
+    user: await User.findOne({ username: 'grahamMi001' }),
     name: 'Civics',
-    students: (
-      await Student.find({})
-    )
-      .map((e) => e.id)
-      .filter((e, index) => index % 2 === 1)
-      .slice(0, 5),
+    students: (await Student.find({})).filter((e, index) => index % 2 === 1).slice(0, 5),
   });
 
   const philosophy = await Roster.create({
-    user: (await User.findOne({ username: 'grahamMi001' }))?._id,
+    user: await User.findOne({ username: 'grahamMi001' }),
     name: 'Philosophy',
-    students: (
-      await Student.find({})
-    )
-      .map((e) => e.id)
-      .filter((e, index) => index % 2 === 0)
-      .slice(0, 5),
+    students: (await Student.find({})).filter((e, index) => index % 2 === 0).slice(0, 5),
   });
 
   const usHistory = await Roster.create({
-    user: (await User.findOne({ username: 'grahamMi001' }))?._id,
+    user: await User.findOne({ username: 'grahamMi001' }),
     name: 'U.S. History',
-    students: (await Student.find({})).map((e) => e._id).slice(10, 15),
+    students: (await Student.find({})).slice(10, 15),
   });
 
   const advisory = await Roster.create({
-    user: (await User.findOne({ username: 'giulianoAl001' }))?._id,
+    user: await User.findOne({ username: 'giulianoAl001' }),
     name: 'Advisory',
-    students: (await Student.find({})).map((e) => e._id).slice(10, 15),
+    students: (await Student.find({})).slice(10, 15),
   });
 
   // const block1 = new Roster({

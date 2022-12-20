@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { connect, set } from 'mongoose';
 
 async function connectDB() {
