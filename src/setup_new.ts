@@ -68,60 +68,57 @@ export default async function setup() {
 
   await Location.insertMany(locationsJsonArray);
 
-  const block1 = new Roster({
+  const block1 = await Roster.create({
     user: (await User.findOne({ username: 'zeaAn001' }))?._id,
     name: 'Block 1',
     students: (await Student.find({})).map((e) => e.id).slice(0, 5),
   });
-  block1.save();
 
-  const block2 = new Roster({
+  const block2 = await Roster.create({
     user: (await User.findOne({ username: 'zeaAn001' }))?._id,
     name: 'Block 2',
     students: (await Student.find({})).map((e) => e.id).slice(5, 10),
   });
-  block2.save();
 
-  const block3 = new Roster({
+  const block3 = await Roster.create({
     user: (await User.findOne({ username: 'zeaAn001' }))?._id,
     name: 'Block 3',
     students: (await Student.find({})).map((e) => e.id).slice(10, 15),
   });
-  block3.save();
 
-  const civics = new Roster({
+  const civics = await Roster.create({
     user: (await User.findOne({ username: 'grahamMi001' }))?._id,
     name: 'Civics',
-    students: (await Student.find({}))
+    students: (
+      await Student.find({})
+    )
       .map((e) => e.id)
       .filter((e, index) => index % 2 === 1)
       .slice(0, 5),
   });
-  civics.save();
 
-  const philosophy = new Roster({
+  const philosophy = await Roster.create({
     user: (await User.findOne({ username: 'grahamMi001' }))?._id,
     name: 'Philosophy',
-    students: (await Student.find({}))
+    students: (
+      await Student.find({})
+    )
       .map((e) => e.id)
       .filter((e, index) => index % 2 === 0)
       .slice(0, 5),
   });
-  philosophy.save();
 
-  const usHistory = new Roster({
+  const usHistory = await Roster.create({
     user: (await User.findOne({ username: 'grahamMi001' }))?._id,
     name: 'U.S. History',
     students: (await Student.find({})).map((e) => e._id).slice(10, 15),
   });
-  usHistory.save();
 
-  const advisory = new Roster({
+  const advisory = await Roster.create({
     user: (await User.findOne({ username: 'giulianoAl001' }))?._id,
     name: 'Advisory',
     students: (await Student.find({})).map((e) => e._id).slice(10, 15),
   });
-  advisory.save();
 
   // const block1 = new Roster({
   //   user: Users[0].id,
