@@ -12,7 +12,8 @@ const getUserData = async (req: Request, res: Response) => {
     return {
       courseTitle: roster.name,
       students: roster.students.map((e: any) => {
-        return { firstName: e.firstName, lastName: e.lastName };
+        // eslint-disable-next-line no-underscore-dangle
+        return { firstName: e.firstName, lastName: e.lastName, id: e._id };
       }),
     };
   });

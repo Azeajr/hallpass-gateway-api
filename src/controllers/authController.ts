@@ -35,7 +35,8 @@ const handleLogin: RequestHandler = async (req: Request, res: Response) => {
       secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
-    return res.json({ roles, accessToken });
+    // eslint-disable-next-line no-underscore-dangle
+    return res.json({ roles, accessToken, userId: foundUser._id });
   }
   return res.sendStatus(401);
 };
