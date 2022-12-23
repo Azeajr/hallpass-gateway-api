@@ -7,6 +7,13 @@ const getHallpasses = async (req: Request, res: Response) => {
   res.send(hallpasses);
 };
 
+const getHallpass = async (req: Request, res: Response) => {
+  const { hallpassId } = req.params;
+
+  const hallpass = await Hallpass.findById(hallpassId).exec();
+  res.send(hallpass);
+};
+
 const postHallpass = async (req: Request, res: Response) => {
   const { date, studentId, origin, destination, timer, state } = req.body;
 
@@ -24,4 +31,4 @@ const postHallpass = async (req: Request, res: Response) => {
   res.send('Hallpass posted successfully');
 };
 
-export { getHallpasses, postHallpass };
+export { getHallpasses, getHallpass, postHallpass };

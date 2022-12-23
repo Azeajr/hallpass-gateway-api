@@ -5,4 +5,6 @@ const router = express.Router();
 
 router.route('/').get(hallpassController.getHallpasses).post(hallpassController.postHallpass);
 
+router.route('/:hallpassId').get(hallpassController.getHallpass);
+
 export default router;
