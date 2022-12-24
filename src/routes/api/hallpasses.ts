@@ -3,8 +3,12 @@ import * as hallpassController from '../../controllers/hallpassController';
 
 const router = express.Router();
 
-router.route('/').get(hallpassController.getHallpasses).post(hallpassController.postHallpass);
+router.route('/').post(hallpassController.postHallpass).get(hallpassController.getHallpasses);
 
-router.route('/:hallpassId').get(hallpassController.getHallpass);
+router
+  .route('/:hallpassId')
+  .get(hallpassController.getHallpass)
+  .put(hallpassController.putHallpass)
+  .delete(hallpassController.deleteHallpass);
 
 export default router;

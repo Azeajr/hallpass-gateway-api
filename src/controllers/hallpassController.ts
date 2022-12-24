@@ -7,13 +7,6 @@ const getHallpasses = async (req: Request, res: Response) => {
   res.send(hallpasses);
 };
 
-const getHallpass = async (req: Request, res: Response) => {
-  const { hallpassId } = req.params;
-
-  const hallpass = await Hallpass.findById(hallpassId).exec();
-  res.send(hallpass);
-};
-
 const postHallpass = async (req: Request, res: Response) => {
   const { date, studentId, origin, destination, timer, state } = req.body;
 
@@ -31,4 +24,28 @@ const postHallpass = async (req: Request, res: Response) => {
   res.send('Hallpass posted successfully');
 };
 
-export { getHallpasses, getHallpass, postHallpass };
+const getHallpass = async (req: Request, res: Response) => {
+  const { hallpassId } = req.params;
+
+  const hallpass = await Hallpass.findById(hallpassId).exec();
+  res.send(hallpass);
+};
+
+const putHallpass = async (req: Request, res: Response) => {
+  const { hallpassId } = req.params;
+  const newProperties = req.body;
+
+  await Hallpass.findOneAndUpdate({ _id: hallpassId }, { ...newProperties }).exec();
+
+  res.send('Hallpass updated successfully');
+};
+
+const deleteHallpass = async (req: Request, res: Response) => {
+  const { hallpassId } = req.params;
+
+  await Hallpass.findOneAndRemove({ _id: hallpassId }).exec();
+
+  res.send('Hallpass deleted successfully');
+};
+
+export { getHallpasses, getHallpass, postHallpass, putHallpass, deleteHallpass };

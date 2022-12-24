@@ -3,11 +3,9 @@ import Location from '../model/Location';
 import User from '../model/User';
 
 const postDestination = async (req: Request, res: Response) => {
-  const { destination } = req.body;
+  const { name } = req.body;
 
-  await Location.create({
-    name: destination,
-  });
+  await Location.create({ name });
 
   res.send('Destination posted successfully');
 };
@@ -29,9 +27,9 @@ const getDestination = async (req: Request, res: Response) => {
 
 const putDestination = async (req: Request, res: Response) => {
   const { destinationId } = req.params;
-  const { destinationName } = req.body;
+  const { name } = req.body;
 
-  await Location.findOneAndUpdate({ _id: destinationId }, { name: destinationName }).exec();
+  await Location.findOneAndUpdate({ _id: destinationId }, { name }).exec();
 
   res.send('Destination updated successfully');
 };
