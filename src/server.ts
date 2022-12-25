@@ -8,7 +8,7 @@ import { logger } from './middleware/logEvents';
 import errorHandler from './middleware/errorHandler';
 import corsOptions from './config/corsOptions';
 import hallpasses from './routes/api/hallpasses';
-import users from './routes/api/users';
+import rosters from './routes/api/rosters';
 import destinations from './routes/api/destinations';
 import root from './routes/root';
 import credentials from './middleware/credentials';
@@ -55,7 +55,7 @@ app.use('/logout', logout);
 
 app.use(verifyJWT);
 
-app.use('/users', users);
+app.use('/rosters', rosters);
 
 app.use('/destinations', destinations);
 
